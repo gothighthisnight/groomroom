@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>groomroom</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container header__row">
+            <a href="/">
+                <img class="logo" src="/logo/logo_groom.png" alt="">
+            </a>
+
+            <div class="header__buttons">
+                <a class="btn" href="/">главная</a>
+                <a class="btn" href="/logout">выйти</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="about">
+            <div class="container">
+                <h1 class="title">
+                    <span class="title__anchor">
+                        панель администратора
+                        <svg class="title__oval" viewBox="0 0 340 140" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30 70 C40 20,120 10,200 20 C260 25,310 50,300 80 C290 120,200 130,130 120 C70 110,20 95,30 70" fill="none" stroke="black" stroke-width="7" stroke-linecap="round" />
+                            <path d="M40 75 C50 30,130 15,205 25 C255 30,300 55,290 85 C280 115,195 120,140 115 C80 110,35 95,40 75" fill="none" stroke="black" stroke-width="4" stroke-linecap="round" opacity="0.8" />
+                        </svg>
+                    </span>
+                </h1>
+
+                <p class="about__text">просмотр и изменение статуса заявок</p>
+            </div>
+        </section>
+
+        <section class="recent">
+            <div class="container">
+                <h2 class="title">все заявки</h2>
+
+                <% if (!requests || requests.length == 0) { %>
+                    <div class="container--filled">
+                        <p class="text">заявок пока нет</p>
+                    </div>
+                <% } %>
+
+                <div class="grid grid--works">
+                    <% requests.forEach(r => { %>
+                        <div class="work">
+                            <img class="work__img" src="/uploads/<%= r.pet_photo %>" alt="">
+
+                            <div class="work__name"><%= r.pet_name %></div>
+
+                            <p class="text">пользователь: <%= r.login %></p>
+
+                            <p class="text">
+                                статус:
+                                <% if (r.status == 'new') { %>
+                                    новая
+                                <% } %>
+                                <% if (r.status == 'processing') { %>
+                                    обработка данных
+                                <% } %>
+                                <% if (r.status == 'done') { %>
+                                    услуга оказана
+                                <% } %>
+                            </p>
+
+                            <% if (r.result_photo) { %>
+                                <img class="work__img" src="/uploads/<%= r.result_photo %>" alt="">
+                            <% } %>
+
+                            <% if (r.status === 'new') { %>
+                                <form action="/groom/update-status/<%= r.id %>" method="POST" >
+                                    <button class="btn" type="submit">в обработку</button>
+                                </form>
+                            <% } %>
+
+                            <% if (r.status === 'processing') { %>
+                                <form class="create-form" action="/groom/update-status/<%= r.id %>" method="POST" enctype="multipart/form-data">
+                                    <input class="auth-form__input" type="file" name="result_photo" accept=".jpg,.jpeg,.bmp" required>
+                                    <button class="btn" type="submit">завершить</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container">
+                <img class="logo logo--foter" src="/logo/logo_groom.png" alt="">
+                <div class="footer__text">© все права защищены, 2026.</div>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>

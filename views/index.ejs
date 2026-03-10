@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroomRoom</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container header__row">
+            <img class="logo" src="/logo/logo_groom.png" alt="">
+
+            <div class="header__buttons">    
+                <% if (!user) { %>
+                    <button class="btn" type="button" onclick="open_auth_window()">войти</button>
+                <% } else { %>
+                    <% if (user.role == 'admin') { %>
+                        <a class="btn" href="/admin">админ панель</a>
+                    <% } else { %>
+                        <a class="btn" href="/user">кабинет</a>
+                    <% } %>
+                    
+                    <a class="btn" href="/logout">выйти</a>
+                <% } %> 
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="about">
+            <div class="container">
+                <h2 class="title">
+                    <span class="title__anchor">
+                        чё это такое?
+                        <svg class="title__oval" viewBox="0 0 340 140" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30 70 C40 20,120 10,200 20 C260 25,310 50,300 80 C290 120,200 130,130 120 C70 110,20 95,30 70" fill="none" stroke="black" stroke-width="7" stroke-linecap="round" />
+                            <path d="M40 75 C50 30,130 15,205 25 C255 30,300 55,290 85 C280 115,195 120,140 115 C80 110,35 95,40 75" fill="none" stroke="black" stroke-width="4" stroke-linecap="round" opacity="0.8" />
+                        </svg>
+                    </span>
+                </h2>
+                
+                <p class="about__text">groomroom — это уютный салон для питомцев, где забота о шерсти, лапках и настроении превращается в приятную процедуру, а каждый хвост уходит отсюда довольным</p>
+            </div>
+        </section>
+
+        <section class="advantages">
+            <div class="container">
+                <h2 class="title">
+                    <span class="title__anchor">
+                        чем мы хороши
+                        
+                        <svg class="title__underline" viewBox="0 0 260 40" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 22    C40 30, 90 12, 140 20    C180 26, 220 28, 250 18" fill="none" stroke="black" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M15 26    C50 34, 95 18, 145 24    C185 30, 220 30, 245 22" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.8" />
+                        </svg>
+                    </span>
+                </h2>
+
+                <div class="grid grid--cards">
+                    <div class="card">
+                        <div class="card__icon">🐾</div>
+                        <h3 class="card__title">бережный уход</h3>
+                        <p class="card__text">мы работаем спокойно и аккуратно, чтобы питомец чувствовал себя комфортно и не испытывал лишнего стресса во время процедур</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__icon">✂️</div>
+                        <h3 class="card__title">опытные грумеры</h3>
+                        <p class="card__text">наши мастера умеют найти подход к любому характеру, даже если питомец считает расчёску своим главным врагом</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__icon">💖</div>
+                        <h3 class="card__title">комфорт</h3>
+                        <p class="card__text">у нас нет спешки и шума, только спокойная обстановка, внимание и забота о каждом хвостатом клиенте</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="recent">
+            <div class="container">
+                <% if (requests.length != 0) { %>
+                    <h2 class="title">последние работы</h2>
+                <% } %>
+
+                <div class="grid grid--works">
+                    <% requests.forEach(r => { %>
+                        <div class="work">
+                            <img class="work__img" src="/uploads/<%= r.pet_photo %>" alt="">
+                            <div class="work__name"><%= r.pet_name %></div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container">
+                <img class="logo logo--foter" src="/logo/logo_groom.png" alt="">
+                <div class="footer__text">© Все права защищены, 2026.</div>
+            </div>
+        </footer>
+    </main>
+
+
+    <div class="auth" id="auth">
+        <div class="auth__box">
+            <div class="auth__tabs">
+                <button class="auth__tab auth__tab--active" type="button" data-tab="login">вход</button>
+                <button class="auth__tab" type="button" data-tab="register">регистрация</button>
+            </div>
+
+            <form class="auth-form" id="login_form" action="/login" method="POST">
+                <input class="auth-form__input" name="login" placeholder="логин" required>
+                <input class="auth-form__input" type="password" name="password" placeholder="пароль" required>
+                <button class="btn auth-form__submit" type="submit">войти</button>
+            </form>
+
+            <form class="auth-form" id="registration_form" action="/register" method="POST" hidden>
+                <input class="auth-form__input" name="full_name" placeholder="фио" required>
+                <input class="auth-form__input" name="login" placeholder="логин" required>
+                <input class="auth-form__input" type="email" name="email" placeholder="почта" required>
+                <input class="auth-form__input" type="password" name="password" placeholder="пароль" required>
+                <input class="auth-form__input" type="password" name="password_repeat" placeholder="повтор пароля" required>
+                <label class="auth-form__agree">
+                    <input type="checkbox" name="agree" required>
+                    согласие на обработку данных
+                </label>
+
+                <button class="btn auth-form__submit" type="submit">зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/index.js"></script>
+</body>
+</html>
+
