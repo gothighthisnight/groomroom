@@ -45,6 +45,7 @@ a {
     background: var(--accent);
     position: sticky;
     top: 0;
+    z-index: 1000;
 }
 
 .header__row {
@@ -373,4 +374,83 @@ a {
 .input--error {
     border-color: #ff4d4f;
     background: #ffeded;
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 32px;
+    }
+
+    .about__text {
+        font-size: 22px;
+    }
+
+    .grid--cards {
+        grid-template-columns: 1fr;
+    }
+
+    .grid--works {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid--top-zone {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        min-height: auto;
+    }
+
+    .work {
+        min-height: auto;
+        padding: 20px;
+    }
+
+    .work__img {
+        height: 160px;
+    }
+
+    .container--filled {
+        padding: 20px;
+    }
+
+    .logo {
+        height: 24px;
+    }
+
+    .card:hover, .work:hover {
+        transform: none;
+    }
+}
+
+@media (max-width: 420px) {
+    .title {
+        font-size: 28px;
+    }
+
+    .about__text {
+        font-size: 20px;
+    }
+
+    .grid--works {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .work {
+        padding: 20px;
+    }
+
+    .logo {
+        height: 18px;
+    }
+
+    .btn {
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+    }
 }
